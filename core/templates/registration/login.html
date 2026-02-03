@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %} {% block content %}
+<h2 class="glass-card-title">Welcome to CleanTrack..</h2>
+<p class="text-muted">Join the mission for a cleaner world...</p>
+<h2>Login</h2>
+<form method="post" class="form-card">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Login</button>
+</form>
+<p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+{% endblock %}

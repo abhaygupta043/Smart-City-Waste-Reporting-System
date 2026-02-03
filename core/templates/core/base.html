@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CleanTrack — Cleaner Communities</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <header class="main-nav">
+      <div class="nav-left container">
+        <a
+          href="{% url 'home' %}"
+          class="nav-brand"
+          aria-label="CleanTrack — Cleaner Communities"
+        >
+          <img
+            src="{% static 'img/india.png' %}"
+            alt="India motif"
+            class="site-logo"
+            style="height: 64px"
+          />
+          <div class="brand-block">
+            <span class="site-title">CleanTrack</span>
+            <div class="nav-tag">Citizen reporting for a greener city</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-right container">
+        {% if user.is_authenticated %} {% if user.is_staff %}
+        <a href="/admin/" class="nav-link">Admin Panel</a>
+        {% else %}
+        <span class="nav-link">Points: {{ user.reward_points }}</span>
+        {% endif %}
+
+        <form action="{% url 'logout' %}" method="post" class="logout-form">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-link logout-btn">Logout</button>
+        </form>
+        {% else %}
+        <!-- Header links hidden for unauthenticated users; use hero CTAs for primary actions -->
+        {% endif %}
+      </div>
+      <img
+        src="{% static 'img/swach.jpg' %}"
+        alt="decorative swach image"
+        class="header-planet header-swach"
+        aria-hidden="true"
+      />
+    </header>
+
+    <div class="hero">
+      <div class="container hero-inner">
+        <div>
+          <h1 class="hero-title">CleanTrack — Make your city cleaner</h1>
+          <p class="hero-sub">
+            Record a person throwing garbage in a public place, report it, track
+            progress, and follow up until it is resolved.
+          </p>
+          <div class="hero-cta">
+            {% if user.is_authenticated %} {% if user.is_staff %}
+            <!-- Admins: use the Admin Panel link in the header; no hero CTA needed -->
+            {% else %}
+            <a href="{% url 'dashboard' %}" class="btn btn-primary"
+              >Submit a Report</a
+            >
+            <a href="{% url 'my_reports' %}" class="btn btn-secondary"
+              >My Submissions</a
+            >
+            {% endif %} {% else %}
+            <a href="{% url 'register' %}" class="btn btn-primary"
+              >Get Started — Register</a
+            >
+            <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img
+            src="{% static 'img/city2.jpg' %}"
+            alt="cityscape decoration"
+            aria-hidden="true"
+            class="hero-deco"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      {% if messages %} {% for message in messages %}
+      <div class="message-container {{ message.tags }}">{{ message }}</div>
+      {% endfor %} {% endif %} {% block content %}{% endblock %}
+    </div>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          &copy; {{ now|date:"Y" }} CleanTrack — Community Environmental
+          Reporting
+        </div>
+        <div class="text-muted">Built for cleaner, greener cities</div>
+      </div>
+    </footer>
+  </body>
+</html>

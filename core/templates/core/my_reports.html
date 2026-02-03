@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %} {% block content %}
+<div class="row" style="align-items: center; margin-bottom: 16px">
+  <div class="col">
+    <h2>My Submissions</h2>
+    <p class="text-muted" style="margin-top: 6px">
+      Keep track of your reports and rewards
+    </p>
+  </div>
+  <div style="width: 240px">
+    <div class="card">
+      <h4 style="margin: 0">Rewards</h4>
+      <p class="text-muted" style="margin-top: 8px">
+        You have <strong>{{ user.reward_points }}</strong> points
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="report-grid">
+  {% for report in reports %}
+  <div class="report-card">
+    <p><strong>Location:</strong> {{ report.location }}</p>
+    <p><strong>Date:</strong> {{ report.created_at|date:"M d, Y" }}</p>
+
+    <video width="100%" controls>
+      <source src="{{ report.video.url }}" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <p>
+      Status: {% if report.status == 'Approved' %}
+      <span class="badge badge-approved">Approved</span>
+      {% elif report.status == 'Rejected' %}
+      <span class="badge badge-rejected">Rejected</span>
+      {% else %}
+      <span class="badge badge-pending">Pending</span>
+      {% endif %}
+    </p>
+  </div>
+  {% empty %}
+  <div class="card">
+    <p>
+      You haven't submitted any reports yet.
+      <a href="{% url 'dashboard' %}">Submit one now!</a>
+    </p>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'core/base.html' %} {% block content %} {% if user.is_staff %}
+<div class="admin-card">
+  <h2>Welcome, Administrator</h2>
+  <p>Staff Account: <strong>{{ user.username }}</strong></p>
+  <p>To manage reports or award points, please enter the management console.</p>
+</div>
+
+{% else %}
+
+<div class="page-container">
+  <div class="row" style="margin-bottom: 18px">
+    <div class="col card">
+      <h3 style="margin: 0">Your Points</h3>
+      <p class="text-muted" style="margin: 8px 0 0">
+        You have <strong>{{ user.reward_points }}</strong> reward points
+      </p>
+    </div>
+    <div class="col card">
+      <h3 style="margin: 0">Your Activity</h3>
+      <p class="text-muted" style="margin: 8px 0 0">
+        Total reports: <strong>{{ user_reports|length }}</strong>
+      </p>
+    </div>
+  </div>
+
+  <div class="row" style="align-items: flex-start; gap: 20px">
+    <div class="col">
+      <h2>Submit Waste Report</h2>
+      <div class="card">
+        <form method="post" enctype="multipart/form-data" class="form-card">
+          {% csrf_token %}
+          <div class="form-fields">{{ form.as_p }}</div>
+          <button type="submit" class="btn btn-primary">Submit Report</button>
+        </form>
+      </div>
+    </div>
+
+    <div style="width: 320px">
+      <div class="card">
+        <h4 style="margin: 0">How it works</h4>
+        <ol style="margin-top: 10px; padding-left: 18px; color: var(--muted)">
+          <li>Record a video of a person throwing garbage in a public place, upload the video, and provide the location and details.</li>
+          <li>Submit the report for review.</li>
+          <li>Earn points when approved.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <h3>Your Report History</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr class="table-head">
+          <th class="cell">Date</th>
+          <th class="cell">Location</th>
+          <th class="cell">Status</th>
+          <th class="cell">Evidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for report in user_reports %}
+        <tr>
+          <td class="cell">{{ report.created_at|date:"d M Y" }}</td>
+          <td class="cell">{{ report.location }}</td>
+          <td class="cell">
+            {% if report.status == 'Approved' %}
+            <span class="badge badge-approved">Approved</span>
+            {% elif report.status == 'Rejected' %}
+            <span class="badge badge-rejected">Rejected</span>
+            {% else %}
+            <span class="badge badge-pending">Pending</span>
+            {% endif %}
+          </td>
+          <td class="cell">
+            {% if report.video %}
+            <a href="{{ report.video.url }}" target="_blank" class="text-link"
+              >View File</a
+            >
+            {% else %}
+            <span class="muted">No File</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="empty-row">
+            No reports found. Help clean the environment to earn points!
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %} {% endblock %}

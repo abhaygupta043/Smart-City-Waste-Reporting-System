@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="40" viewBox="0 0 220 40" role="img" aria-label="CleanTrack logo">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0" stop-color="#ff9933"/>
+      <stop offset="1" stop-color="#116c38"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <ellipse cx="22" cy="20" rx="18" ry="12" fill="url(#g)"/>
+    <path d="M14 14c6 2 9 0 12-6s10-7 6 3c-4 9-18 16-28 9 0 0 2-4 10-6z" fill="#fff" opacity="0.55"/>
+    <text x="56" y="25" font-family="Mukta, Arial, sans-serif" font-weight="800" font-size="18" fill="#0d47a1">CleanTrack</text>
+  </g>
+</svg>
